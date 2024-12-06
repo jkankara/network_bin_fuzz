@@ -1,0 +1,105 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/jkankara/Bbuzz/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+BIT	bbuzz/common.py	/^BIT = 1$/;"	v
+BYTE	bbuzz/common.py	/^BYTE = 8$/;"	v
+Bbuzz	README.md	/^# Bbuzz$/;"	c
+DWORD	bbuzz/common.py	/^DWORD = 32$/;"	v
+Fuzz	bbuzz/fuzz/fuzz.py	/^class Fuzz():$/;"	c
+Mutate	bbuzz/mutate/mutate.py	/^class Mutate():$/;"	c
+Payload	bbuzz/payload/payload.py	/^class Payload():$/;"	c
+Protocol	bbuzz/protocol/protocol.py	/^class Protocol():$/;"	c
+QWORD	bbuzz/common.py	/^QWORD = 64$/;"	v
+WORD	bbuzz/common.py	/^WORD = 16$/;"	v
+__author__	bbuzz/__init__.py	/^__author__ = "Lockout"$/;"	v
+__init__	bbuzz/fuzz/fuzz.py	/^    def __init__(self, timeout=0.1):$/;"	m	class:Fuzz
+__init__	bbuzz/mutate/mutate.py	/^    def __init__(self, mutate_payload, mutate_options={"STATIC": True}):$/;"	m	class:Mutate
+__init__	bbuzz/protocol/protocol.py	/^    def __init__(self, protocol_layer, protocol_options):$/;"	m	class:Protocol
+__license__	bbuzz/__init__.py	/^__license__ = "MIT"$/;"	v
+__version__	bbuzz/__init__.py	/^__version__ = "0.1.0\/Bridgette"$/;"	v
+add	bbuzz/payload/payload.py	/^    def add(self, bit_field_data, bit_field_options):$/;"	m	class:Payload
+all_bitfields	bbuzz/payload/payload.py	/^    def all_bitfields(self):$/;"	m	class:Payload
+assemble_payload	bbuzz/mutate/mutate.py	/^    def assemble_payload(self, mutant_instance):$/;"	m	class:Mutate
+bin2bytes	bbuzz/common.py	/^def bin2bytes(binvalue):$/;"	f
+bin2hex	bbuzz/common.py	/^def bin2hex(binvalue):$/;"	f
+binary	bbuzz/mutate/binary.py	/^def binary(case, caselen):$/;"	f
+bit_fields	bbuzz/payload/payload.py	/^    bit_fields = []$/;"	v	class:Payload
+bitfield	bbuzz/payload/payload.py	/^    def bitfield(self, field_number):$/;"	m	class:Payload
+bitfield_data	bbuzz/payload/payload.py	/^    def bitfield_data(self, bitfield_number):$/;"	m	class:Payload
+bitfield_format	bbuzz/payload/payload.py	/^    def bitfield_format(self, bitfield_number):$/;"	m	class:Payload
+bitfield_fuzzable	bbuzz/payload/payload.py	/^    def bitfield_fuzzable(self, bitfield_number):$/;"	m	class:Payload
+bitfield_hash	bbuzz/payload/payload.py	/^    def bitfield_hash(self, bitfield_number):$/;"	m	class:Payload
+bitfield_length	bbuzz/payload/payload.py	/^    def bitfield_length(self, bitfield_number):$/;"	m	class:Payload
+bitfield_type	bbuzz/payload/payload.py	/^    def bitfield_type(self, bitfield_number):$/;"	m	class:Payload
+bitflip	bbuzz/mutate/binary.py	/^def bitflip(case, caselen):$/;"	f
+bitshift_left	bbuzz/mutate/binary.py	/^def bitshift_left(case, caselen):$/;"	f
+bitshift_right	bbuzz/mutate/binary.py	/^def bitshift_right(case, caselen):$/;"	f
+bytes2bin	bbuzz/common.py	/^def bytes2bin(bytesvalue, init_length=0):$/;"	f
+convert	bbuzz/mutate/mutate.py	/^    def convert(self):$/;"	m	class:Mutate
+create	bbuzz/protocol/protocol.py	/^    def create(self, interface="enp216s0f1", l4proto = "IPPROTO_SCTP"):$/;"	m	class:Protocol
+dec2bin	bbuzz/common.py	/^def dec2bin(decvalue, init_length):$/;"	f
+dstip	sctp.py	/^srcip, dstip = "11.1.1.12", "11.1.1.11"$/;"	v
+dstmac	example.py	/^dstmac = '00:1b:21:87:a9:d5'$/;"	v
+dstmac	sample/example.py	/^dstmac = '52:54:00:12:34:56'$/;"	v
+dstmac	sctp.py	/^srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"$/;"	v
+dstport	sctp.py	/^dstport, srcport = "2900", "9000"$/;"	v
+endian	bbuzz/mutate/binary.py	/^def endian(case, caselen):$/;"	f
+entropy	bbuzz/common.py	/^def entropy(data):$/;"	f
+error_handler	bbuzz/common.py	/^def error_handler(message):$/;"	f
+field_count	bbuzz/payload/payload.py	/^    def field_count(self):$/;"	m	class:Payload
+fuzz	bbuzz/fuzz/fuzz.py	/^    def fuzz(self, mutant, protocol):$/;"	m	class:Fuzz
+fuzzer	example.py	/^fuzzer = bbuzz.fuzz.Fuzz()$/;"	v
+fuzzer	sample/example.py	/^fuzzer = bbuzz.fuzz.Fuzz()$/;"	v
+fuzzer	sctp.py	/^fuzzer = bbuzz.fuzz.Fuzz()$/;"	v
+gen_binall	bbuzz/mutate/random.py	/^def gen_binall(binlength):$/;"	f
+gen_bitfield_hash	bbuzz/payload/payload.py	/^    def gen_bitfield_hash(self, field_value, seed=0, length=128):$/;"	m	class:Payload
+gen_random	bbuzz/mutate/mutate.py	/^    def gen_random(self):$/;"	m	class:Mutate
+get	bbuzz/mutate/mutate.py	/^    def get(self):$/;"	m	class:Mutate
+group_fields	bbuzz/common.py	/^def group_fields(payload, payload_mask, silent=True):$/;"	f
+hex2bin	bbuzz/common.py	/^def hex2bin(hexvalue, init_length=0):$/;"	f
+interface	example.py	/^interface = "enp216s0f1"$/;"	v
+interface	sample/example.py	/^interface = "tap0"$/;"	v
+interface	sctp.py	/^interface = "enp216s0f1"$/;"	v
+ip2bin	bbuzz/common.py	/^def ip2bin(ip_address):$/;"	f
+ip2hex	bbuzz/common.py	/^def ip2hex(ip_address):$/;"	f
+ipver	sctp.py	/^ipver = 4$/;"	v
+ipversion	bbuzz/common.py	/^def ipversion(ip_address):$/;"	f
+kill	bbuzz/protocol/protocol.py	/^    def kill(self):$/;"	m	class:Protocol
+knownvalues	bbuzz/mutate/binary.py	/^def knownvalues(caselen):$/;"	f
+l4proto	sctp.py	/^l4proto = "IPPROTO_SCTP" #IPPROTO_ICMP, IPPROTO_TCP, IPPROTO_UDP$/;"	v
+load	example.py	/^load = bbuzz.payload.Payload()$/;"	v
+load	sample/example.py	/^load = bbuzz.payload.Payload()$/;"	v
+load	sctp.py	/^load = bbuzz.payload.Payload()$/;"	v
+load_assemble	bbuzz/common.py	/^def load_assemble(payload):$/;"	f
+mac2hex	bbuzz/common.py	/^def mac2hex(mac_address):$/;"	f
+monitor	bbuzz/fuzz/fuzz.py	/^    def monitor(self):$/;"	m	class:Fuzz
+mutagen	example.py	/^mutagen = bbuzz.mutate.Mutate(load, {"STATIC": True, "RANDOM": True})$/;"	v
+mutagen	sample/example.py	/^mutagen = bbuzz.mutate.Mutate(load, {"STATIC": True, "RANDOM": True})$/;"	v
+mutagen	sctp.py	/^mutagen = bbuzz.mutate.Mutate(load, {"STATIC": True, "RANDOM": True})$/;"	v
+mutate	bbuzz/mutate/mutate.py	/^    def mutate(self):$/;"	m	class:Mutate
+oct2bin	bbuzz/common.py	/^def oct2bin(octvalue, init_length):$/;"	f
+onecase	bbuzz/common.py	/^def onecase(case):$/;"	f
+payload_analyze	bbuzz/common.py	/^def payload_analyze(data_lists=[], datafile="", detailed_analysis=2):$/;"	f
+payload_length	bbuzz/payload/payload.py	/^    def payload_length(self):$/;"	m	class:Payload
+proto	example.py	/^proto = bbuzz.protocol.Protocol($/;"	v
+proto	sample/example.py	/^proto = bbuzz.protocol.Protocol($/;"	v
+proto	sctp.py	/^proto = 0x84$/;"	v
+proto	sctp.py	/^proto = bbuzz.protocol.Protocol($/;"	v
+rand_bin	bbuzz/mutate/random.py	/^def rand_bin(value, length=0, seed=0):$/;"	f
+send	bbuzz/protocol/protocol.py	/^    def send(self, data):$/;"	m	class:Protocol
+srcip	sctp.py	/^srcip, dstip = "11.1.1.12", "11.1.1.11"$/;"	v
+srcmac	example.py	/^srcmac = "00:1b:21:67:65:a9"$/;"	v
+srcmac	sample/example.py	/^srcmac = '12:e9:d8:6a:e8:f0'$/;"	v
+srcmac	sctp.py	/^srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"$/;"	v
+srcport	sctp.py	/^dstport, srcport = "2900", "9000"$/;"	v
+str2bin	bbuzz/common.py	/^def str2bin(strvalue, init_length=0):$/;"	f
+track	bbuzz/fuzz/fuzz.py	/^    def track(self):$/;"	m	class:Fuzz
+zerocase	bbuzz/common.py	/^def zerocase(case):$/;"	f
