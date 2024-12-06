@@ -19,6 +19,11 @@ class Fuzz():
         """Start the fuzzing process"""
         while True:
             payload = mutant.get()
+            try:
+                print(payload.hex())
+            except:
+                payload = bytes(payload[2:-1], 'utf-8')
+                print(payload)
             if payload == "__END":
                 continue
             elif payload == "__FIN":

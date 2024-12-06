@@ -52,23 +52,23 @@ proto.create(interface)
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-#load.add("ff",
-#        {                                           # sctp header
-#            "FORMAT": "hex",
-#            "TYPE": "numeric",
-#            "LENGTH": 64,
-#            "FUZZABLE": True
-#            }
-#        )
-#
-load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
-        {
+load.add("0000000000000000000000000000000000000000000000000000000000000000",
+        {                                           # sctp header
             "FORMAT": "bin",
             "TYPE": "binary",
-            "LENGTH": 96,
-            "FUZZABLE": True,
+            "LENGTH": 11,
+            "FUZZABLE": True
             }
         )
+
+#load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
+#        {
+#            "FORMAT": "bin",
+#            "TYPE": "binary",
+#            "LENGTH": 96,
+#            "FUZZABLE": True,
+#            }
+#        )
 
 # Generate payload mutations
 print("[+] Generating mutations...")

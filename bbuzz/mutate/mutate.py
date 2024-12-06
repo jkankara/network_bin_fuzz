@@ -13,7 +13,7 @@ import bbuzz.mutate.numeric
 import bbuzz.mutate.static
 import bbuzz.mutate.string
 import bbuzz.mutate.random
-
+import random
 from itertools import product
 
 
@@ -87,7 +87,6 @@ class Mutate():
                         "No field {0} format specified".format(field_number)
                         )
                 data = None
-
             self.bitfields.append(data.zfill(data_length))
 
     def mutate(self):
@@ -132,6 +131,8 @@ class Mutate():
                 data = self.bitfields[field_number]
                 if self.payload.bitfield_fuzzable(field_number):
                     data_len = self.payload.bitfield_length(field_number)
+                    #print("data len = ", data_len, random.randint(0,96))
+                    data_len = random.randint(0,data_len)
                     mutation[field_number] = bbuzz.mutate.random.rand_bin(
                                                     data, data_len
                                                     )

@@ -11,6 +11,7 @@ import bbuzz.common
 
 def binary(case, caselen):
     """Generate binary mutations"""
+    print("in binary = ", caselen)
     mutations = []
     mutations.append(case)
     if bbuzz.common.zerocase(case):

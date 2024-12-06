@@ -75,13 +75,13 @@ def bin2hex(binvalue):
     step = BYTE
     binlen = len(binvalue)
     hexvalue = ""
-    if len(binvalue) % step == 0:
-        for octet in range(0, binlen, step):
-            binoctet = binvalue[octet:(octet + step)]
-            hexoctet = hex(int(binoctet, 2))[2:].zfill(2)
-            hexvalue += hexoctet
-    else:
-        error_handler("Cannot perform binary conversion to bytes")
+    #print("in bin conversion to bytes - ", binvalue, " ",len(binvalue), " ",  step)
+    if not len(binvalue) % step == 0:
+        binvalue = binvalue.zfill(binlen + (step - (binlen % step)))
+    for octet in range(0, binlen, step):
+        binoctet = binvalue[octet:(octet + step)]
+        hexoctet = hex(int(binoctet, 2))[2:].zfill(2)
+        hexvalue += hexoctet
     return hexvalue
 
 
