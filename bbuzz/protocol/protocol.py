@@ -10,7 +10,20 @@ import bbuzz.common
 
 import socket
 from binascii import unhexlify
+import socket
+import fcntl
+import struct
 
+def get_interface_index(interface_name):
+    SIOCGIFINDEX = 0x8933  # IOCTL to get the interface index
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    ifreq = struct.pack('256s', interface_name[:15].encode('utf-8'))
+    try:
+        res = fcntl.ioctl(sock.fileno(), SIOCGIFINDEX, ifreq)
+        index = struct.unpack('I', res[16:20])[0]
+        return index
+    except IOError as e:
+        raise ValueError(f"Interface {interface_name} not found: {e}")
 
 class Protocol():
     def __init__(self, protocol_layer, protocol_options):
@@ -53,9 +66,11 @@ class Protocol():
         self.layer = protocol_layer.lower()
         self.options = protocol_options
         self.sock = False
+        self.interface = ""
 
     def create(self, interface="enp216s0f1", l4proto = "IPPROTO_SCTP"):
         """Establish a specific layer connection"""
+        self.interface = interface 
         if not self.sock:
             if self.layer == 'raw2':
                 self.sock = socket.socket(
@@ -69,15 +84,21 @@ class Protocol():
             if self.layer == 'raw3':
                 if self.options["IP_VERSION"] == 4:
                     INET = 2
+                    addr = "0.0.0.0" 
+                    self.sock = socket.socket(
+                          INET,
+                          socket.SOCK_RAW,132
+                          )
+                    self.sock.bind((addr, 0))
+
                 elif self.options["IP_VERSION"] == 6:
                     INET = 10
-                self.sock = socket.socket(
+                    addr = "::" 
+                    self.sock = socket.socket(
                         INET,
                         socket.SOCK_RAW,132
                         )
-                #self.sock.setsockopt(socket.SOL_SOCKET, 25, interface.encode() + b'\0')  # Bind to "eth0"
-               # self.sock.bind((interface, 0))
-                self.sock.bind(("0.0.0.0", 0))
+                    self.sock.bind((addr, 0,0,0))
                 return self.sock
 
             if self.layer == 'raw4':
@@ -131,8 +152,14 @@ class Protocol():
             self.sock.send(dst_mac + src_mac + ethertype + data)
 
         if self.layer == 'raw3':
-            self.sock.connect((self.options["DESTINATION_IP"],0))
-            self.sock.send(data)
+            if self.options["IP_VERSION"] == 4:
+                self.sock.connect((self.options["DESTINATION_IP"],0))
+                self.sock.send(data)
+            if self.options["IP_VERSION"] == 6:
+                #get the ipv6 interface index and popuate here "ip -6 addr show"
+                ipv6_int_index = get_interface_index(self.interface)
+                self.sock.connect((self.options["DESTINATION_IP"],0,0,ipv6_int_index))
+                self.sock.send(data)
 
         if self.layer == 'raw4':
             if self.options["BROADCAST"]:

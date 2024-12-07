@@ -29,8 +29,8 @@ import bbuzz
 # Define the base Layer-2 connection
 interface = "enp216s0f1"
 srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"
-srcip, dstip = "11.1.1.12", "11.1.1.11"
-ipver = 4
+srcip, dstip = "fe80::21b:21ff:fe87:a9d5", "fe80::e27b:a3b0:69c2:c7d1"
+ipver = 6
 proto = 0x84
 dstport, srcport = "2900", "9000"
 l4proto = "IPPROTO_SCTP" #IPPROTO_ICMP, IPPROTO_TCP, IPPROTO_UDP
@@ -38,9 +38,9 @@ l4proto = "IPPROTO_SCTP" #IPPROTO_ICMP, IPPROTO_TCP, IPPROTO_UDP
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
+            "IP_VERSION": 6,                  # IPv6
             "SOURCE_IP": srcip,
             "DESTINATION_IP": dstip,
-            "IP_VERSION": 4,                  # IPv4
             "PROTO":132,
             "SOURCE_MAC": srcmac,
             "DESTINATION_MAC": dstmac
@@ -52,23 +52,23 @@ proto.create(interface)
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-#load.add("ff",
-#        {                                           # sctp header
-#            "FORMAT": "hex",
-#            "TYPE": "numeric",
-#            "LENGTH": 64,
-#            "FUZZABLE": True
-#            }
-#        )
-#
-load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
-        {
+load.add("0000000000000000000000000000000000000000000000000000000000000000",
+        {                                           # sctp header
             "FORMAT": "bin",
             "TYPE": "binary",
-            "LENGTH": 96,
-            "FUZZABLE": True,
+            "LENGTH": 64,
+            "FUZZABLE": True
             }
         )
+
+#load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
+#        {
+#            "FORMAT": "bin",
+#            "TYPE": "binary",
+#            "LENGTH": 96,
+#            "FUZZABLE": True,
+#            }
+#        )
 
 # Generate payload mutations
 print("[+] Generating mutations...")
