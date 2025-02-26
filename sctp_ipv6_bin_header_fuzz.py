@@ -29,7 +29,7 @@ import bbuzz
 # Define the base Layer-2 connection
 interface = "enp216s0f1"
 srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"
-srcip, dstip = "fe80::21b:21ff:fe87:a9d5", "fe80::e27b:a3b0:69c2:c7d1"
+srcip, dstip = "fe80::200:ff:fe00:401", "fe80::e2b7:6ba:5d30:8b21"
 ipver = 6
 proto = 0x84
 dstport, srcport = "2900", "9000"

@@ -27,9 +27,10 @@ import bbuzz
 # "BROADCAST": BOOL_TURE-FALSE
 
 # Define the base Layer-2 connection
-interface = "enp216s0f1"
-srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"
-srcip, dstip = "11.1.1.12", "11.1.1.11"
+
+interface = "enp59s0f1np1"
+srcmac, dstmac = '00:00:00:00:01:01', "00:00:00:00:04:01"
+srcip, dstip = "13.1.1.11", "13.1.1.12"
 ipver = 4
 proto = 0x84
 dstport, srcport = "2900", "9000"
