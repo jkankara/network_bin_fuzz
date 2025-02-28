@@ -13,7 +13,7 @@ import bbuzz
 # Define the base Layer-2 connection
 print("[+] Setting up the base layer connection...")
 #interface = "tap0"
-interface = "enp216s0f1"
+interface = "enp59s0f1np1"
 srcmac = "00:1b:21:67:65:a9"
 #srcmac = '12:e9:d8:6a:e8:f0'
 #dstmac = '52:54:00:12:34:56'

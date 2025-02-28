@@ -20,10 +20,10 @@ class Fuzz():
         while True:
             payload = mutant.get()
             try:
-                print(payload.hex())
+                print("Payload hex: ", payload.hex())
             except:
                 payload = bytes(payload[2:-1], 'utf-8')
-                print(payload)
+                print("Payload: ", payload.hex())
             if payload == "__END":
                 continue
             elif payload == "__FIN":

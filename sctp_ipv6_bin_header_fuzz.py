@@ -27,9 +27,11 @@ import bbuzz
 # "BROADCAST": BOOL_TURE-FALSE
 
 # Define the base Layer-2 connection
-interface = "enp216s0f1"
-srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"
-srcip, dstip = "fe80::200:ff:fe00:401", "fe80::e2b7:6ba:5d30:8b21"
+interface = "enp59s0f1np1"
+srcmac, dstmac = '00:00:00:00:01:01', "00:00:00:00:04:01"
+#interface = "enp216s0f1"
+#srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"
+srcip, dstip = "fe80::200:ff:fe00:101", "fe80::200:ff:fe00:401"
 ipver = 6
 proto = 0x84
 dstport, srcport = "2900", "9000"
@@ -52,23 +54,23 @@ proto.create(interface)
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-load.add("0000000000000000000000000000000000000000000000000000000000000000",
-        {                                           # sctp header
-            "FORMAT": "bin",
-            "TYPE": "binary",
-            "LENGTH": 64,
-            "FUZZABLE": True
-            }
-        )
-
-#load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
-#        {
+#load.add("0000000000000000000000000000000000000000000000000000000000000000",
+#        {                                           # sctp header
 #            "FORMAT": "bin",
 #            "TYPE": "binary",
-#            "LENGTH": 96,
-#            "FUZZABLE": True,
+#            "LENGTH": 64,
+#            "FUZZABLE": True
 #            }
 #        )
+#
+load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
+        {
+            "FORMAT": "bin",
+            "TYPE": "binary",
+            "LENGTH": 96,
+            "FUZZABLE": True,
+            }
+        )
 
 # Generate payload mutations
 print("[+] Generating mutations...")
