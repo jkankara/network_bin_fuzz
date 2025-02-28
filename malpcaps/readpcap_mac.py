@@ -5,7 +5,7 @@ import sys
 import pandas as pd
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
-limit_pkts = 20000
+limit_pkts = -1 #20000
 
 def extract_ethernet_headers(packet):
     """
@@ -39,7 +39,8 @@ def extract_ethernet_headers(packet):
         else:
             eth_header = 'N/A'
     except:
-        print("not a ethernet packet", packet)
+        if hasattr(packet, 'llc'):
+            print("its a llc pkt skipping ")
     return eth_header
 
 def main(file_path):
@@ -54,10 +55,12 @@ def main(file_path):
 
     # Create an empty DataFrame
     df = pd.DataFrame(columns=['Source MAC', 'Destination MAC', 'Type', 'Length', 'Header Checksum'])
-
+    i = 1 
     # Extract headers and store in DataFrame
     for packet in cap:
+        print("packet# ", i) 
         eth_header = extract_ethernet_headers(packet)
+        i += 1
         if eth_header != 'N/A':
             df = pd.concat([df, pd.DataFrame([eth_header])], ignore_index=True)
             limit_pkts -= 1
