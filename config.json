@@ -1,0 +1,18 @@
+{
+  "interface": "enp59s0f1np1",
+  "dstmac": "00:00:00:00:01:01",
+  "srcmac": "00:00:00:00:04:01",
+  "dstip": "13.1.1.11",
+  "srcip": "13.1.1.12",
+  "ipver4": 4,
+  "ipver6": 6,
+  "srcport": "9000",
+  "dstport": "2900",
+  "l4proto_sctp": "IPPROTO_SCTP",
+  "l4proto_tcp": "IPPROTO_TCP",
+  "l4proto_udp": "IPPROTO_UDP",
+  "l4proto_sctp_num": 132,
+  "l4proto_tcp_num": 6,
+  "l4proto_udp_num": 17,
+  "l4proto_icmp_num": 1
+}

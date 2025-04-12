@@ -7,7 +7,6 @@
 # Please see LICENSE file for more details
 
 import bbuzz
-import json
 
 # For 'raw2' a dictionary of the following values # is expected to form a Layer-2 frame:
 # "SOURCE_MAC": "STR_MAC_ADDRESS" | # "DESTINATION_MAC": "STR_MAC_ADDRESS"
@@ -27,24 +26,29 @@ import json
 # "SOURCE_PORT": INT_PORT_NUMBER
 # "BROADCAST": BOOL_TURE-FALSE
 
-# Load JSON from file
-with open('config.json', 'r') as file:
-    config = json.load(file)
-
 # Define the base Layer-2 connection
+
+interface = "enp59s0f1np1"
+srcmac, dstmac = '00:00:00:00:01:01', "00:00:00:00:04:01"
+srcip, dstip = "13.1.1.11", "13.1.1.12"
+ipver = 4
+proto = 0x84
+dstport, srcport = "2900", "9000"
+l4proto = "IPPROTO_SCTP" #IPPROTO_ICMP, IPPROTO_TCP, IPPROTO_UDP
+
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
-            "SOURCE_IP": config["srcip"],
-            "DESTINATION_IP": config["dstip"],
-            "IP_VERSION": config["ipver4"],                
-            "PROTO":config["l4proto_sctp_num"],
-            "SOURCE_MAC": config["srcmac"],
-            "DESTINATION_MAC": config["dstmac"]
+            "SOURCE_IP": srcip,
+            "DESTINATION_IP": dstip,
+            "IP_VERSION": 4,                  # IPv4
+            "PROTO":132,
+            "SOURCE_MAC": srcmac,
+            "DESTINATION_MAC": dstmac
             }
         )
 
-proto.create(config["interface"])
+proto.create(interface)
 # Describe the Layer-3 payload - plain IPv6 header
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()

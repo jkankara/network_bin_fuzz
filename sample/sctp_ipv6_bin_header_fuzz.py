@@ -7,7 +7,6 @@
 # Please see LICENSE file for more details
 
 import bbuzz
-import json
 
 # For 'raw2' a dictionary of the following values # is expected to form a Layer-2 frame:
 # "SOURCE_MAC": "STR_MAC_ADDRESS" | # "DESTINATION_MAC": "STR_MAC_ADDRESS"
@@ -27,45 +26,51 @@ import json
 # "SOURCE_PORT": INT_PORT_NUMBER
 # "BROADCAST": BOOL_TURE-FALSE
 
-# Load JSON from file
-with open('config.json', 'r') as file:
-    config = json.load(file)
-
 # Define the base Layer-2 connection
+interface = "enp59s0f1np1"
+srcmac, dstmac = '00:00:00:00:01:01', "00:00:00:00:04:01"
+#interface = "enp216s0f1"
+#srcmac, dstmac = '00:1b:21:87:a9:d5', "00:1b:21:67:65:a9"
+srcip, dstip = "fe80::200:ff:fe00:101", "fe80::200:ff:fe00:401"
+ipver = 6
+proto = 0x84
+dstport, srcport = "2900", "9000"
+l4proto = "IPPROTO_SCTP" #IPPROTO_ICMP, IPPROTO_TCP, IPPROTO_UDP
+
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
-            "SOURCE_IP": config["srcip"],
-            "DESTINATION_IP": config["dstip"],
-            "IP_VERSION": config["ipver4"],                
-            "PROTO":config["l4proto_sctp_num"],
-            "SOURCE_MAC": config["srcmac"],
-            "DESTINATION_MAC": config["dstmac"]
+            "IP_VERSION": 6,                  # IPv6
+            "SOURCE_IP": srcip,
+            "DESTINATION_IP": dstip,
+            "PROTO":132,
+            "SOURCE_MAC": srcmac,
+            "DESTINATION_MAC": dstmac
             }
         )
 
-proto.create(config["interface"])
+proto.create(interface)
 # Describe the Layer-3 payload - plain IPv6 header
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-load.add("0000000000000000000000000000000000000000000000000000000000000000",
-        {                                           # sctp header
-            "FORMAT": "bin",
-            "TYPE": "binary",
-            "LENGTH": 11,
-            "FUZZABLE": True
-            }
-        )
-
-#load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
-#        {
+#load.add("0000000000000000000000000000000000000000000000000000000000000000",
+#        {                                           # sctp header
 #            "FORMAT": "bin",
 #            "TYPE": "binary",
-#            "LENGTH": 96,
-#            "FUZZABLE": True,
+#            "LENGTH": 64,
+#            "FUZZABLE": True
 #            }
 #        )
+#
+load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
+        {
+            "FORMAT": "bin",
+            "TYPE": "binary",
+            "LENGTH": 96,
+            "FUZZABLE": True,
+            }
+        )
 
 # Generate payload mutations
 print("[+] Generating mutations...")

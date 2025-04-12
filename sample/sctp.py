@@ -7,7 +7,6 @@
 # Please see LICENSE file for more details
 
 import bbuzz
-import json
 
 # For 'raw2' a dictionary of the following values # is expected to form a Layer-2 frame:
 # "SOURCE_MAC": "STR_MAC_ADDRESS" | # "DESTINATION_MAC": "STR_MAC_ADDRESS"
@@ -27,50 +26,72 @@ import json
 # "SOURCE_PORT": INT_PORT_NUMBER
 # "BROADCAST": BOOL_TURE-FALSE
 
-# Load JSON from file
-with open('config.json', 'r') as file:
-    config = json.load(file)
-
 # Define the base Layer-2 connection
+#interface = "enp59s0f1np1"
+interface = "enp134s0f1"
+dstmac, srcmac = '00:00:00:00:01:01', "00:00:00:00:04:01"
+dstip, srcip = "13.1.1.11", "13.1.1.12"
+ipver = 4
+#proto = 0x84
+dstport, srcport = "2900", "9000"
+l4proto = "IPPROTO_SCTP" #IPPROTO_ICMP, IPPROTO_TCP, IPPROTO_UDP
+
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
-            "SOURCE_IP": config["srcip"],
-            "DESTINATION_IP": config["dstip"],
-            "IP_VERSION": config["ipver4"],                
-            "PROTO":config["l4proto_sctp_num"],
-            "SOURCE_MAC": config["srcmac"],
-            "DESTINATION_MAC": config["dstmac"]
+            "SOURCE_IP": srcip,
+            "DESTINATION_IP": dstip,
+            "IP_VERSION": 4,                  # IPv4
+            "PROTO":132,
+            "SOURCE_MAC": srcmac,
+            "DESTINATION_MAC": dstmac
             }
         )
 
-proto.create(config["interface"])
+proto.create(interface)
 # Describe the Layer-3 payload - plain IPv6 header
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-load.add("0000000000000000000000000000000000000000000000000000000000000000",
-        {                                           # sctp header
-            "FORMAT": "bin",
-            "TYPE": "binary",
-            "LENGTH": 11,
+load.add(srcport,
+        {                                           # Source Port
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 16,
             "FUZZABLE": True
             }
         )
 
-#load.add('0000000000000000000000000000000000000000000000000000000000000000',                                      # sctp header
-#        {
-#            "FORMAT": "bin",
-#            "TYPE": "binary",
-#            "LENGTH": 96,
-#            "FUZZABLE": True,
-#            }
-#        )
+load.add(dstport,
+        {                                           # dst Port
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 16,
+            "FUZZABLE": True
+            }
+        )
+
+load.add("ff",
+        {                                           # ver tag
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 32,
+            "FUZZABLE": True
+            }
+        )
+
+load.add("ff",
+        {                                           # checksum
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 32,
+            "FUZZABLE": True
+            }
+        )
 
 # Generate payload mutations
 print("[+] Generating mutations...")
 mutagen = bbuzz.mutate.Mutate(load, {"STATIC": True, "RANDOM": True})
-#mutagen = bbuzz.mutate.Mutate(load, {"STATIC": False, "RANDOM": True})
 
 # Sart fuzzing
 print("[+] Starting fuzzing...")
