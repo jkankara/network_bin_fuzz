@@ -7,26 +7,25 @@
 # Please see LICENSE file for more details
 
 import bbuzz
+import json
+
+# Load JSON from file
+with open('config.json', 'r') as file:
+    config = json.load(file)
 
 
 # Layer-3 fuzzing example
 # Define the base Layer-2 connection
 print("[+] Setting up the base layer connection...")
-#interface = "tap0"
-interface = "enp59s0f1np1"
-srcmac = "00:1b:21:67:65:a9"
-#srcmac = '12:e9:d8:6a:e8:f0'
-#dstmac = '52:54:00:12:34:56'
-dstmac = '00:1b:21:87:a9:d5'
 proto = bbuzz.protocol.Protocol(
         'raw2',
         {
-            "SOURCE_MAC": srcmac,
-            "DESTINATION_MAC": dstmac,
+            "SOURCE_MAC": config["srcmac"],
+            "DESTINATION_MAC": config["dstmac"],
             "ETHER_TYPE": "0x86DD"                  # IPv6
             }
         )
-proto.create(interface)
+proto.create(config["interface"])
 
 # Describe the Layer-3 payload - plain IPv6 header
 print("[+] Parsing payload fields...")
