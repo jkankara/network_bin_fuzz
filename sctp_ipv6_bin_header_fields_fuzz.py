@@ -16,9 +16,9 @@ with open('config.json', 'r') as file:
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
-            "SOURCE_IP": config["srcip4"],
-            "DESTINATION_IP": config["dstip4"],
-            "IP_VERSION": config["ipver4"],                
+            "SOURCE_IP": config["srcip6"],
+            "DESTINATION_IP": config["dstip6"],
+            "IP_VERSION": config["ipver6"],                
             "PROTO":config["l4proto_sctp_num"],
             "SOURCE_MAC": config["srcmac"],
             "DESTINATION_MAC": config["dstmac"]
@@ -30,11 +30,38 @@ proto.create(config["interface"])
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-load.add("0000000000000000000000000000000000000000000000000000000000000000",
-        {                                           # sctp header
-            "FORMAT": "bin",
-            "TYPE": "binary",
-            "LENGTH": 11,
+load.add(config["srcport"],
+        {                                           # Source Port
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 16,
+            "FUZZABLE": True
+            }
+        )
+
+load.add(config["dstport"],
+        {                                           # dst Port
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 16,
+            "FUZZABLE": True
+            }
+        )
+
+load.add("ff",
+        {                                           # ver tag
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 32,
+            "FUZZABLE": True
+            }
+        )
+
+load.add("ff",
+        {                                           # checksum
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 32,
             "FUZZABLE": True
             }
         )
