@@ -60,7 +60,7 @@ load.add('003c',                                    # Total Length (e.g. 0x003c 
             "FORMAT": "hex",
             "TYPE": "numeric",
             "LENGTH": 16,
-            "FUZZABLE": True
+            "FUZZABLE": True 
         }
         )
 load.add('0000',                                    # Identification

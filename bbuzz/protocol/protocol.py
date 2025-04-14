@@ -149,14 +149,15 @@ class Protocol():
             src_mac = bbuzz.common.mac2hex(self.options["SOURCE_MAC"])
             dst_mac = bbuzz.common.mac2hex(self.options["DESTINATION_MAC"])
 	    #jagdbg: addressing issues with unhexlify for even/odd errors
-            #print("Ether Type: ",self.options["ETHER_TYPE"][::] )
-            org_value = self.options["ETHER_TYPE"][::]
-            value  = int(org_value, 16)
-            hex_str = f"{value:04x}"
-            #print("hex Ether Type: ",hex_str)
-            ethertype = unhexlify(hex_str[2::])
+            org_ethertype = self.options["ETHER_TYPE"][2::]
+            #print("original ether type = ", org_ethertype, len(org_ethertype)) 
+            if len(org_ethertype) %2 != 0:
+            	print("Padding...")
+            	org_ethertype = "0" + org_ethertype
+            #print("original ether type after fixing = ", org_ethertype, len(org_ethertype)) 
+            ethertype = unhexlify(org_ethertype)
             #ethertype = unhexlify(self.options["ETHER_TYPE"][2::])
-            #print("After fixing Ether Type: ",f"{ethertype:04x}" )
+            #print("ether type = ", ethertype)
             self.sock.send(dst_mac + src_mac + ethertype + data)
 
         if self.layer == 'raw3':
