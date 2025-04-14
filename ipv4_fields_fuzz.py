@@ -39,7 +39,7 @@ load.add('4',                                       # Version (IPv4)
             "FUZZABLE": False
         }
         )
-load.add('0000',                                    # IHL (Internet Header Length, e.g. 5 * 32 bits = 20 bytes)
+load.add('0101',                                    # IHL (Internet Header Length, e.g. 5 * 32 bits = 20 bytes)
         {
             "FORMAT": "bin",
             "TYPE": "binary",
@@ -55,12 +55,12 @@ load.add('00000000',                                # Type of Service (DSCP + EC
             "FUZZABLE": True
         }
         )
-load.add('003c',                                    # Total Length (e.g. 0x003c = 60 bytes)
+load.add('0014',                                    # Total Length (e.g. 0x003c = 60 bytes)
         {
             "FORMAT": "hex",
             "TYPE": "numeric",
             "LENGTH": 16,
-            "FUZZABLE": True 
+            "FUZZABLE": False 
         }
         )
 load.add('0000',                                    # Identification
@@ -71,12 +71,12 @@ load.add('0000',                                    # Identification
             "FUZZABLE": True
         }
         )
-load.add('010',                                     # Flags (e.g., DF set)
+load.add('000',                                     # Flags (e.g., DF set)
         {
             "FORMAT": "bin",
             "TYPE": "binary",
             "LENGTH": 3,
-            "FUZZABLE": True
+            "FUZZABLE": False
         }
         )
 load.add('0000000000000',                           # Fragment Offset
@@ -108,7 +108,7 @@ load.add('0000',                                   # Header Checksum (can be rec
             "FORMAT": "hex",
             "TYPE": "numeric",
             "LENGTH": 16,
-            "FUZZABLE": True
+            "FUZZABLE": False
         }
         )
 load.add(bbuzz.common.ip2bin('13.1.1.12'),        # Source IP
@@ -116,7 +116,7 @@ load.add(bbuzz.common.ip2bin('13.1.1.12'),        # Source IP
             "FORMAT": "bin",
             "TYPE": "binary",
             "LENGTH": 32,
-            "FUZZABLE": True
+            "FUZZABLE": False
         }
         )
 load.add(bbuzz.common.ip2bin('13.1.1.11'),      # Destination IP

@@ -152,7 +152,6 @@ class Protocol():
             org_ethertype = self.options["ETHER_TYPE"][2::]
             #print("original ether type = ", org_ethertype, len(org_ethertype)) 
             if len(org_ethertype) %2 != 0:
-            	print("Padding...")
             	org_ethertype = "0" + org_ethertype
             #print("original ether type after fixing = ", org_ethertype, len(org_ethertype)) 
             ethertype = unhexlify(org_ethertype)
