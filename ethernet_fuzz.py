@@ -18,11 +18,11 @@ with open('config.json', 'r') as file:
 # Define the base Layer-2 connection
 print("[+] Setting up the base layer connection...")
 proto = bbuzz.protocol.Protocol(
-        'raw2',
+        'raw1',
         {
             "SOURCE_MAC": config["srcmac"],
             "DESTINATION_MAC": config["dstmac"],
-            "ETHER_TYPE": "0x800"                  # IPv4
+#            "ETHER_TYPE": "0x800"                  # IPv4
             }
         )
 proto.create(config["interface"])
@@ -31,11 +31,29 @@ proto.create(config["interface"])
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-load.add("00000",
+load.add("0x800",  # Default EtherType (IPv4)
+        {
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 16,  # EtherType is 16 bits
+            "FUZZABLE": True
+        }
+    )
+load.add("0x800",  # Default EtherType (IPv4)
+        {
+            "FORMAT": "hex",
+            "TYPE": "numeric",
+            "LENGTH": 16,  # EtherType is 16 bits
+            "FUZZABLE": False
+        }
+    )
+
+
+load.add("1111111111111111000000",
         {                                           #ipv4 header 
             "FORMAT": "bin",
             "TYPE": "binary",
-            "LENGTH": 5,
+            "LENGTH": 64,
             "FUZZABLE": True
             }
         )

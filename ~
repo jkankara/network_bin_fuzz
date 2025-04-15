@@ -72,15 +72,6 @@ class Protocol():
         """Establish a specific layer connection"""
         self.interface = interface 
         if not self.sock:
-            if self.layer == 'raw1':
-                self.sock = socket.socket(
-                        socket.AF_PACKET,
-                        socket.SOCK_RAW#,
-                        #socket.htons(int(self.options["ETHER_TYPE"], 16))
-                        )
-                self.sock.bind((interface, 0))
-                return self.sock
-
             if self.layer == 'raw2':
                 self.sock = socket.socket(
                         socket.AF_PACKET,
@@ -154,17 +145,10 @@ class Protocol():
 
     def send(self, data):
         """Send data over established connection"""
-
-        if self.layer == 'raw1':
-            print("Sending Raw pkt")
-            src_mac = bbuzz.common.mac2hex(self.options["SOURCE_MAC"])
+         if self.layer == 'raw1':
             dst_mac = bbuzz.common.mac2hex(self.options["DESTINATION_MAC"])
-            #self.sock.send(dst_mac + src_mac + ethertype + data)
-            #print("sending: ", str(dst_mac)+"**"+str(src_mac)+"**"+str(data)+"len: "+str(len(data)))
-            self.sock.send(dst_mac + src_mac + data)
 
-
-        if self.layer == 'raw2':
+       if self.layer == 'raw2':
             src_mac = bbuzz.common.mac2hex(self.options["SOURCE_MAC"])
             dst_mac = bbuzz.common.mac2hex(self.options["DESTINATION_MAC"])
 	    #jagdbg: addressing issues with unhexlify for even/odd errors
