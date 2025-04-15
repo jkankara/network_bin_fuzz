@@ -29,7 +29,7 @@ proto.create(config["interface"], config["l4proto_udp_num"])
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-# TCP Header Fields
+# UDP Header
 load.add('0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',  # Source Port
         {
             "FORMAT": "bin",

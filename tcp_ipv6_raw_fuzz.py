@@ -19,26 +19,26 @@ proto = bbuzz.protocol.Protocol(
             "SOURCE_IP": config["srcip6"],
             "DESTINATION_IP": config["dstip6"],
             "IP_VERSION": config["ipver6"],                
-            "PROTO":config["l4proto_sctp_num"],
+            "PROTO":config["l4proto_tcp_num"],
             "SOURCE_MAC": config["srcmac"],
             "DESTINATION_MAC": config["dstmac"]
             }
         )
 
-proto.create(config["interface"], config["l4proto_sctp_num"])
+proto.create(config["interface"], config["l4proto_tcp_num"])
 # Describe the Layer-3 payload - plain IPv6 header
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
-load.add("0000000000000000000000000000000000000000000000000000000000000000",
-        {                                           # sctp header
+# TCP Header Fields
+load.add('0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',  # Source Port
+        {
             "FORMAT": "bin",
-            "TYPE": "binary",
-            "LENGTH": 11,
+            "TYPE": "numeric",
+            "LENGTH": 160,
             "FUZZABLE": True
-            }
-        )
-
+        }
+    )
 
 # Generate payload mutations
 print("[+] Generating mutations...")

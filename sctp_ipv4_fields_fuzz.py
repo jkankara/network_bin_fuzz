@@ -25,7 +25,7 @@ proto = bbuzz.protocol.Protocol(
             }
         )
 
-proto.create(config["interface"])
+proto.create(config["interface"], config["l4proto_sctp_num"])
 # Describe the Layer-3 payload - plain IPv6 header
 print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
