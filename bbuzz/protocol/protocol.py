@@ -91,12 +91,13 @@ class Protocol():
                 return self.sock
 
             if self.layer == 'raw3':
+                print("l4protocol ============>", l4proto)
                 if self.options["IP_VERSION"] == 4:
                     INET = 2
                     addr = "0.0.0.0" 
                     self.sock = socket.socket(
                           INET,
-                          socket.SOCK_RAW,132
+                          socket.SOCK_RAW,l4proto
                           )
                     self.sock.bind((addr, 0))
 
@@ -105,7 +106,7 @@ class Protocol():
                     addr = "::" 
                     self.sock = socket.socket(
                         INET,
-                        socket.SOCK_RAW,132
+                        socket.SOCK_RAW,l4proto
                         )
                     self.sock.bind((addr, 0,0,0))
                 return self.sock
