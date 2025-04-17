@@ -16,9 +16,9 @@ with open('config.json', 'r') as file:
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
-            "SOURCE_IP": config["srcip4"],
-            "DESTINATION_IP": config["dstip4"],
-            "IP_VERSION": config["ipver4"],                
+            "SOURCE_IP": config["srcip6"],
+            "DESTINATION_IP": config["dstip6"],
+            "IP_VERSION": config["ipver6"],                
             "PROTO":config["l3proto_icmp_num"],
             "SOURCE_MAC": config["srcmac"],
             "DESTINATION_MAC": config["dstmac"]
