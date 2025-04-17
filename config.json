@@ -10,11 +10,12 @@
   "ipver6": 6,
   "srcport": "9000",
   "dstport": "2900",
+  "l3proto_icmp": "IPPROTO_ICMP",
   "l4proto_sctp": "IPPROTO_SCTP",
   "l4proto_tcp": "IPPROTO_TCP",
   "l4proto_udp": "IPPROTO_UDP",
   "l4proto_sctp_num": 132,
   "l4proto_tcp_num": 6,
   "l4proto_udp_num": 17,
-  "l4proto_icmp_num": 1
+  "l3proto_icmp_num": 1
 }

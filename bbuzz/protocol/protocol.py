@@ -181,7 +181,10 @@ class Protocol():
         if self.layer == 'raw3':
             if self.options["IP_VERSION"] == 4:
                 self.sock.connect((self.options["DESTINATION_IP"],0))
-                self.sock.send(data)
+                try:
+                	self.sock.send(data)
+                except:
+                	print("failed to send payload", data)
             if self.options["IP_VERSION"] == 6:
                 #get the ipv6 interface index and popuate here "ip -6 addr show"
                 ipv6_int_index = get_interface_index(self.interface)
