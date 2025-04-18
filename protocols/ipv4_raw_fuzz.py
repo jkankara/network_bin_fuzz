@@ -8,10 +8,19 @@
 
 import bbuzz
 import json
+import os
+
+# Dynamically locate config.json relative to the run_all.py script
+script_dir = os.path.dirname(os.path.abspath(__file__))  # Directory of ethernet_fuzz.py
+config_path = os.path.join(script_dir, "..", "config.json")
 
 # Load JSON from file
-with open('../config.json', 'r') as file:
-    config = json.load(file)
+try:
+    with open(config_path, 'r') as file:
+        config = json.load(file)
+except FileNotFoundError:
+    print(f"[!] config.json not found at {config_path}. Exiting.")
+    exit(1)
 
 
 # Layer-3 fuzzing example
@@ -45,6 +54,6 @@ print("[+] Generating mutations...")
 mutagen = bbuzz.mutate.Mutate(load, {"STATIC": True, "RANDOM": True})
 
 # Sart fuzzing
-print("[+] Starting fuzzing...")
+print("[+] Starting ipv4 raw fuzzing...")
 fuzzer = bbuzz.fuzz.Fuzz()
 fuzzer.fuzz(mutagen, proto)
