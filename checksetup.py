@@ -6,15 +6,22 @@
 # Licensed under the MIT license (MIT)
 # Please see LICENSE file for more details
 
-import bbuzz
-import json
-
-# Checks if the setup is ready to run the tests based on config.json settings
-
 import os
 import json
 import subprocess
 import sys
+
+# Add the protocols directory to the Python path
+script_dir = os.path.dirname(os.path.abspath(__file__))
+protocols_dir = os.path.join(script_dir, "protocols")
+sys.path.append(protocols_dir)
+
+# Import bbuzz from the protocols directory
+try:
+    import bbuzz
+except ImportError as e:
+    print(f"[!] Failed to import bbuzz from protocols directory: {e}")
+    sys.exit(1)
 
 # Load configuration from config.json
 with open('config.json', 'r') as file:
