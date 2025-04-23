@@ -18,15 +18,7 @@ except FileNotFoundError:
     print(f"[!] config.json not found at {config_path}. Exiting.")
     exit(1)
 
-
-# For 'raw2' a dictionary of the following values # is expected to form a Layer-2 frame:
-# For 'raw3' a dictionary of string values # is expected to form a Layer-3 packet:
-
-# Load JSON from file
-with open('../config.json', 'r') as file:
-    config = json.load(file)
-
-# Define the base Layer-2 connection
+# Define the base Layer-3 connection
 proto = bbuzz.protocol.Protocol(
         'raw3',
         {
