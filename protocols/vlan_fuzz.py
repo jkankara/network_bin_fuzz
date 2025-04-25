@@ -30,7 +30,7 @@ proto = bbuzz.protocol.Protocol(
         {
             "SOURCE_MAC": config["srcmac"],
             "DESTINATION_MAC": config["dstmac"],
-#            "ETHER_TYPE": "0x800"                  # IPv4
+#            "ETHER_TYPE": "0x8100"                  # IPv4
             }
         )
 proto.create(config["interface"])
@@ -41,7 +41,6 @@ load = bbuzz.payload.Payload()
 
 # VLAN Tag Control Information (TCI)
 
-
 load.add("0x8100",  # Default EtherType (IPv4)
         {
             "FORMAT": "hex",
@@ -51,7 +50,7 @@ load.add("0x8100",  # Default EtherType (IPv4)
         }
     ) 
 
-load.add("000",  # Priority Code Point (PCP)
+load.add("111",  # Priority Code Point (PCP)
         {
             "FORMAT": "bin",
             "TYPE": "binary",
@@ -59,7 +58,8 @@ load.add("000",  # Priority Code Point (PCP)
             "FUZZABLE": True
         }
     )
-load.add("0",  # Drop Eligible Indicator (DEI)
+
+load.add("1",  # Drop Eligible Indicator (DEI)
         {
             "FORMAT": "bin",
             "TYPE": "binary",
@@ -67,10 +67,11 @@ load.add("0",  # Drop Eligible Indicator (DEI)
             "FUZZABLE": True
         }
     )
-load.add("0100",  # VLAN Identifier (VID)
+
+load.add("000000000001",  # VLAN Identifier (VID)
         {
-            "FORMAT": "hex",
-            "TYPE": "numeric",
+            "FORMAT": "bin",
+            "TYPE": "binary",
             "LENGTH": 12,  # VID is 12 bits
             "FUZZABLE": True
         }
