@@ -5,16 +5,13 @@
 #
 # Licensed under the MIT license (MIT)
 # Please see LICENSE file for more details
-#
-# PTP (Precision Time Protocol / IEEE 1588) Fuzzer
-# EtherType: 0x88F7
 
 import bbuzz
 import json
 import os
 
 # Dynamically locate config.json relative to the run_all.py script
-script_dir = os.path.dirname(os.path.abspath(__file__))  # Directory of ptp_fuzz.py
+script_dir = os.path.dirname(os.path.abspath(__file__))  # Directory of ethernet_fuzz.py
 config_path = os.path.join(script_dir, "..", "config.json")
 
 # Load JSON from file
@@ -25,19 +22,20 @@ except FileNotFoundError:
     print(f"[!] config.json not found at {config_path}. Exiting.")
     exit(1)
 
-# Define the base Layer-2 connection for PTP
-print("[+] Setting up the base layer connection for PTP...")
+# Define the base Layer-2 connection
+print("[+] Setting up the base layer connection...")
 proto = bbuzz.protocol.Protocol(
         'raw1',
         {
             "SOURCE_MAC": config["srcmac"],
             "DESTINATION_MAC": config["dstmac"],
+#            "ETHER_TYPE": "0x800"                  # IPv4
             }
         )
 proto.create(config["interface"])
 
-# Describe the PTP payload
-print("[+] Parsing PTP payload fields...")
+# Describe the Layer-3 payload - plain IPv6 header
+print("[+] Parsing payload fields...")
 load = bbuzz.payload.Payload()
 
 # EtherType for PTP (0x88F7) - NOT FUZZABLE as per requirement
