@@ -6,8 +6,9 @@
 # Licensed under the MIT license (MIT)
 # Please see LICENSE file for more details
 
+import time
 from time import sleep
-
+from datetime import datetime
 
 class Fuzz():
     """Conduct and manage the fuzzing process"""
@@ -20,10 +21,12 @@ class Fuzz():
         while True:
             payload = mutant.get()
             try:
-                print("Payload hex: ", payload.hex())
+                #print("Payload hex: ", payload.hex())
+                print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}] Payload hex: {payload.hex()}")
             except:
                 payload = bytes(payload[2:-1], 'utf-8')
-                print("Payload: ", payload.hex())
+                #print("Payload: ", payload.hex())
+                print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}] Payload hex: {payload.hex()}")
             if payload == "__END":
                 continue
             elif payload == "__FIN":
