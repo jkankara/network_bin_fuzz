@@ -109,10 +109,29 @@ def run_checksetup():
         sys.exit(1)
 
 
-def run_script(script_path, timeout):
+def _stream_stdout(process, log_file):
+    """
+    Reads process stdout line by line, printing to console.
+    If log_file is set, writes lines containing 'Payload hex:' to the file.
+    """
+    for line in iter(process.stdout.readline, ''):
+        line = line.rstrip()
+        if not line:
+            continue
+        print(line)
+        if log_file and "Payload hex:" in line:
+            try:
+                with open(log_file, 'a') as f:
+                    f.write(line + '\n')
+            except OSError as e:
+                print(f"[!] Failed to write to log file: {e}")
+
+
+def run_script(script_path, timeout, log_file=None):
     """
     Runs a single Python script with a timeout.
     Monitors connection loss and terminates the script if connection is lost.
+    If log_file is provided, lines containing 'Payload hex:' are appended to it.
     """
     # Check if connection is already lost
     if _connection_lost.is_set():
@@ -121,11 +140,20 @@ def run_script(script_path, timeout):
     
     try:
         print(f"[+] Running: {script_path}")
-        # Use Popen to allow monitoring during execution
         process = subprocess.Popen(
             f"python3 {script_path}",
-            shell=True
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=None,
+            text=True,
+            bufsize=1
         )
+        
+        # Thread reads stdout so the monitor loop is not blocked
+        stdout_thread = threading.Thread(
+            target=_stream_stdout, args=(process, log_file), daemon=True
+        )
+        stdout_thread.start()
         
         # Monitor the process and check for connection loss
         start_time = time.time()
@@ -135,14 +163,15 @@ def run_script(script_path, timeout):
                 print(f"[!] Connection lost. Terminating: {script_path}")
                 process.terminate()
                 try:
-                    process.wait(timeout=5)  # Give it 5 seconds to terminate gracefully
+                    process.wait(timeout=5)
                 except subprocess.TimeoutExpired:
-                    process.kill()  # Force kill if it doesn't terminate
+                    process.kill()
+                stdout_thread.join(timeout=2)
                 return
             
             # Check if process has completed
             if process.poll() is not None:
-                # Process finished
+                stdout_thread.join(timeout=5)
                 if process.returncode == 0:
                     print(f"[+] Completed: {script_path}")
                 else:
@@ -157,9 +186,9 @@ def run_script(script_path, timeout):
                     process.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     process.kill()
+                stdout_thread.join(timeout=2)
                 return
             
-            # Sleep briefly to avoid busy waiting
             time.sleep(0.5)
             
     except Exception as e:
@@ -167,7 +196,7 @@ def run_script(script_path, timeout):
 
 
 
-def run_scripts_in_protocols(mode, timeout):
+def run_scripts_in_protocols(mode, timeout, log_file=None):
     """
     Runs all Python scripts in the protocols directory.
     Supports serial and parallel execution modes.
@@ -194,11 +223,11 @@ def run_scripts_in_protocols(mode, timeout):
                 print("[!] Connection lost. Stopping fuzzing.")
                 _monitoring_stop_flag.set()
                 break
-            run_script(script, timeout)
+            run_script(script, timeout, log_file)
     elif mode == "parallel":
         print("[+] Running scripts in parallel mode...")
         with ThreadPoolExecutor() as executor:
-            futures = {executor.submit(run_script, script, timeout): script for script in scripts}
+            futures = {executor.submit(run_script, script, timeout, log_file): script for script in scripts}
             for future in as_completed(futures):
                 # Check if connection is lost
                 if _connection_lost.is_set():
@@ -220,13 +249,24 @@ def main():
     parser = argparse.ArgumentParser(description="Run all protocol scripts in serial or parallel.")
     parser.add_argument("--mode", choices=["serial", "parallel"], default="serial", help="Execution mode: serial or parallel")
     parser.add_argument("--timeout", type=int, default=60, help="Time limit for each script (in seconds)")
+    parser.add_argument("--no-payload-log", action="store_true", help="Disable logging of sent payloads to a file")
     args = parser.parse_args()
 
     # Run checksetup.py before proceeding
     run_checksetup()
 
+    # Determine log file path
+    log_file = None
+    if not args.no_payload_log:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        log_file = os.path.join(script_dir, f"packets_sent_{timestamp}.log")
+        print(f"[+] Logging payloads to: {log_file}")
+    else:
+        print("[+] Payload logging disabled.")
+
     # Run scripts in the protocols directory
-    run_scripts_in_protocols(args.mode, args.timeout)
+    run_scripts_in_protocols(args.mode, args.timeout, log_file)
     
     # Stop the monitoring thread
     _monitoring_stop_flag.set()
