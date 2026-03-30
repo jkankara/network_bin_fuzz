@@ -1,5 +1,5 @@
 {
-  "interface": "eth4",
+  "interface": "ens801f1np1",
   "dstmac": "00:00:00:00:04:01",
   "srcmac": "00:00:00:00:01:01",
   "srcip4": "13.1.1.12",
